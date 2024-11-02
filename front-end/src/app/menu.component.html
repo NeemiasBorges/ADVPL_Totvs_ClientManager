@@ -1,0 +1,98 @@
+<!-- Estrutura principal -->
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" [class.sidebar-expanded]="isSidebarExpanded">
+      <div class="sidebar-header">
+        <img src="assets/logo.png" alt="Logo" class="logo">
+        <button mat-icon-button (click)="toggleSidebar()" class="toggle-btn">
+          <mat-icon>{{ isSidebarExpanded ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+        </button>
+      </div>
+  
+      <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+          <mat-icon>dashboard</mat-icon>
+          <span *ngIf="isSidebarExpanded">Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="/clientes" routerLinkActive="active">
+          <mat-icon>people</mat-icon>
+          <span *ngIf="isSidebarExpanded">Clientes</span>
+        </a>
+        <a mat-list-item routerLink="/vendas" routerLinkActive="active">
+          <mat-icon>shopping_cart</mat-icon>
+          <span *ngIf="isSidebarExpanded">Vendas</span>
+        </a>
+        <a mat-list-item routerLink="/produtos" routerLinkActive="active">
+          <mat-icon>inventory_2</mat-icon>
+          <span *ngIf="isSidebarExpanded">Produtos</span>
+        </a>
+        <a mat-list-item routerLink="/relatorios" routerLinkActive="active">
+          <mat-icon>bar_chart</mat-icon>
+          <span *ngIf="isSidebarExpanded">Relatórios</span>
+        </a>
+        <a mat-list-item routerLink="/configuracoes" routerLinkActive="active">
+          <mat-icon>settings</mat-icon>
+          <span *ngIf="isSidebarExpanded">Configurações</span>
+        </a>
+      </mat-nav-list>
+    </aside>
+  
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+      <!-- Navbar -->
+      <mat-toolbar class="navbar">
+        <div class="search-container">
+          <mat-form-field appearance="outline">
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput placeholder="Pesquisar..." [formControl]="searchControl">
+          </mat-form-field>
+        </div>
+        
+        <div class="navbar-actions">
+          <button mat-icon-button [matMenuTriggerFor]="notificationMenu">
+            <mat-icon [matBadge]="3" matBadgeColor="warn">notifications</mat-icon>
+          </button>
+          <button mat-icon-button [matMenuTriggerFor]="userMenu">
+            <mat-icon>account_circle</mat-icon>
+          </button>
+        </div>
+      </mat-toolbar>
+  
+      <!-- Menus -->
+      <mat-menu #notificationMenu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>mail</mat-icon>
+          <span>Nova mensagem</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>notifications_active</mat-icon>
+          <span>Novo pedido</span>
+        </button>
+      </mat-menu>
+  
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>Meu Perfil</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Configurações</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Sair</span>
+        </button>
+      </mat-menu>
+  
+      <!-- Conteúdo do formulário -->
+      <div class="content">
+        <!-- Seu formulário atual aqui -->
+        <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()" class="cliente-form">
+          <!-- ... resto do seu formulário ... -->
+        </form>
+      </div>
+    </div>
+  </div>
+  
