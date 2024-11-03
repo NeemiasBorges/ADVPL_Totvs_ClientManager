@@ -1,160 +1,218 @@
+<mat-stepper orientation="vertical" #stepper>
+  <!-- Step 1: Identificação -->
+  <mat-step [stepControl]="identificacaoForm" [completed]="isStepValid(identificacaoForm)">
+    <ng-template matStepLabel>Identificação</ng-template>
+    <form [formGroup]="identificacaoForm" class="step-content">
+      <div class="form-section">
+        <div class="section-header">
+          <mat-icon>person</mat-icon>
+          <h3>Identificação do Cliente</h3>
+        </div>
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="tipo">
+              <mat-option value="PF">Pessoa Física</mat-option>
+              <mat-option value="PJ">Pessoa Jurídica</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-<form [formGroup]="clienteForm" (ngSubmit)="onSubmit()" class="cliente-form">
-  <!-- <div class="form-header">
-    <h2>Cadastro de Cliente</h2>
-    <div class="tipo-status">
-      <mat-slide-toggle formControlName="status">
-        {{ clienteForm.get('status')?.value === 'Ativo' ? 'Ativo' : 'Inativo' }}
-      </mat-slide-toggle>
-    </div>
-  </div> -->
+          <mat-form-field appearance="outline">
+            <mat-label>CPF/CNPJ</mat-label>
+            <input matInput formControlName="cpfCnpj" placeholder="000.000.000-00">
+            <mat-icon matSuffix>badge</mat-icon>
+          </mat-form-field>
 
-  <div class="form-container">
-    <!-- Seção de Identificação -->
-    <div class="form-section">
-      <div class="section-header">
-        <mat-icon>person</mat-icon>
-        <h3>Identificação</h3>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nome">
+            <mat-icon matSuffix>person_outline</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nome Fantasia</mat-label>
+            <input matInput formControlName="nomeFantasia">
+            <mat-icon matSuffix>store</mat-icon>
+          </mat-form-field>
+        </div>
       </div>
-      <div class="form-grid">
-        <mat-form-field appearance="outline">
-          <mat-label>Tipo</mat-label>
-          <mat-select formControlName="tipo">
-            <mat-option value="PF">Pessoa Física</mat-option>
-            <mat-option value="PJ">Pessoa Jurídica</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>CPF/CNPJ</mat-label>
-          <input matInput formControlName="cpfCnpj" placeholder="000.000.000-00">
-          <mat-icon matSuffix>badge</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Nome</mat-label>
-          <input matInput formControlName="nome">
-          <mat-icon matSuffix>person_outline</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Nome Fantasia</mat-label>
-          <input matInput formControlName="nomeFantasia">
-          <mat-icon matSuffix>store</mat-icon>
-        </mat-form-field>
+      <div class="step-actions">
+        <button mat-button matStepperNext [disabled]="!identificacaoForm.valid">Próximo</button>
       </div>
-    </div>
+    </form>
+  </mat-step>
 
-    <!-- Seção de Contato -->
-    <div class="form-section">
-      <div class="section-header">
-        <mat-icon>contact_phone</mat-icon>
-        <h3>Contato</h3>
+  <!-- Step 2: Contato -->
+  <mat-step [stepControl]="contatoForm" [completed]="isStepValid(contatoForm)">
+    <ng-template matStepLabel>Contato</ng-template>
+    <form [formGroup]="contatoForm" class="step-content">
+      <div class="form-section">
+        <div class="section-header">
+          <mat-icon>contact_phone</mat-icon>
+          <h3>Informações de Contato</h3>
+        </div>
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="ddd-field">
+            <mat-label>DDD</mat-label>
+            <input matInput formControlName="ddd" maxlength="2">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Telefone</mat-label>
+            <input matInput formControlName="telefone" placeholder="00000-0000">
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="email" type="email">
+            <mat-icon matSuffix>email</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Homepage</mat-label>
+            <input matInput formControlName="homepage">
+            <mat-icon matSuffix>language</mat-icon>
+          </mat-form-field>
+        </div>
       </div>
-      <div class="form-grid">
-        <mat-form-field appearance="outline" class="ddd-field">
-          <mat-label>DDD</mat-label>
-          <input matInput formControlName="ddd" maxlength="2">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Telefone</mat-label>
-          <input matInput formControlName="telefone" placeholder="00000-0000">
-          <mat-icon matSuffix>phone</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>E-mail</mat-label>
-          <input matInput formControlName="email" type="email">
-          <mat-icon matSuffix>email</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Homepage</mat-label>
-          <input matInput formControlName="homepage">
-          <mat-icon matSuffix>language</mat-icon>
-        </mat-form-field>
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Voltar</button>
+        <button mat-button matStepperNext [disabled]="!contatoForm.valid">Próximo</button>
       </div>
-    </div>
+    </form>
+  </mat-step>
 
-    <!-- Seção de Endereço -->
-    <div class="form-section">
-      <div class="section-header">
-        <mat-icon>location_on</mat-icon>
-        <h3>Endereço</h3>
+  <!-- Step 3: Endereço -->
+  <mat-step [stepControl]="enderecoForm" [completed]="isStepValid(enderecoForm)">
+    <ng-template matStepLabel>Endereço</ng-template>
+    <form [formGroup]="enderecoForm" class="step-content">
+      <div class="form-section">
+        <div class="section-header">
+          <mat-icon>location_on</mat-icon>
+          <h3>Endereço</h3>
+        </div>
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Endereço</mat-label>
+            <input matInput formControlName="endereco">
+            <mat-icon matSuffix>home</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Bairro</mat-label>
+            <input matInput formControlName="bairro">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>CEP</mat-label>
+            <input matInput formControlName="cep" placeholder="00000-000">
+            <mat-icon matSuffix>local_post_office</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Cidade</mat-label>
+            <input matInput formControlName="cidade">
+            <mat-icon matSuffix>location_city</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <input matInput formControlName="estado">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Código do Município</mat-label>
+            <input matInput formControlName="codigoMunicipio">
+            <mat-icon matSuffix>pin</mat-icon>
+          </mat-form-field>
+        </div>
       </div>
-      <div class="form-grid">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Endereço</mat-label>
-          <input matInput formControlName="endereco">
-          <mat-icon matSuffix>home</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Bairro</mat-label>
-          <input matInput formControlName="bairro">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>CEP</mat-label>
-          <input matInput formControlName="cep" placeholder="00000-000">
-          <mat-icon matSuffix>local_post_office</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Cidade</mat-label>
-          <input matInput formControlName="cidade">
-          <mat-icon matSuffix>location_city</mat-icon>
-        </mat-form-field>
-
-        <!-- <mat-form-field appearance="outline">
-          <mat-label>Estado</mat-label>
-          <mat-select formControlName="estado">
-            <mat-option *ngFor="let estado of estados" [value]="estado">
-              {{estado}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field> -->
-
-        <mat-form-field appearance="outline">
-          <mat-label>Código do Município</mat-label>
-          <input matInput formControlName="codigoMunicipio">
-          <mat-icon matSuffix>pin</mat-icon>
-        </mat-form-field>
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Voltar</button>
+        <button mat-button matStepperNext [disabled]="!enderecoForm.valid">Próximo</button>
       </div>
-    </div>
+    </form>
+  </mat-step>
 
-    <!-- Seção de Informações Adicionais -->
-    <div class="form-section">
-      <div class="section-header">
-        <mat-icon>info</mat-icon>
-        <h3>Informações Adicionais</h3>
+  <!-- Step 4: Informações Adicionais -->
+  <mat-step [stepControl]="informacoesForm" [completed]="isStepValid(informacoesForm)">
+    <ng-template matStepLabel>Informações Adicionais</ng-template>
+    <form [formGroup]="informacoesForm" class="step-content">
+      <div class="form-section">
+        <div class="section-header">
+          <mat-icon>info</mat-icon>
+          <h3>Informações Adicionais</h3>
+        </div>
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Data de Fundação/Nascimento</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dataFundacao">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Informações Adicionais</mat-label>
+            <textarea matInput formControlName="informacoesAdicionais" rows="4"></textarea>
+            <mat-icon matSuffix>notes</mat-icon>
+          </mat-form-field>
+        </div>
       </div>
-      <div class="form-grid">
-        <mat-form-field appearance="outline">
-          <mat-label>Data de Fundação/Nascimento</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="dataFundacao">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Informações Adicionais</mat-label>
-          <textarea matInput formControlName="informacoesAdicionais" rows="4"></textarea>
-          <mat-icon matSuffix>notes</mat-icon>
-        </mat-form-field>
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Voltar</button>
+        <button mat-button (click)="onSubmit()" color="primary" [disabled]="!clienteForm.valid">
+          <mat-icon>save</mat-icon>
+          Salvar Cliente
+        </button>
       </div>
-    </div>
-  </div>
+    </form>
+  </mat-step>
+</mat-stepper>
 
-  <div class="form-actions">
-    <button mat-button type="button" (click)="clienteForm.reset()">
-      <mat-icon>refresh</mat-icon>
-      Limpar
-    </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!clienteForm.valid">
-      <mat-icon>save</mat-icon>
-      Salvar Cliente
-    </button>
-  </div>
-</form>
+<style>
+  .step-content {
+    padding: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .form-section {
+    margin-bottom: 24px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 8px;
+  }
+
+  .section-header h3 {
+    margin: 0;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  .ddd-field {
+    max-width: 100px;
+  }
+
+  .step-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+</style>
