@@ -1,0 +1,115 @@
+<mat-card class="search-card">
+    <mat-card-header>
+      <mat-card-title>Consulta de Clientes</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Formulário de Busca -->
+      <form [formGroup]="searchForm" class="search-form">
+        <div class="search-fields">
+          <mat-form-field appearance="outline">
+            <mat-label>Nome/Razão Social</mat-label>
+            <input matInput formControlName="razao" (input)="applyFilter()">
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+      
+          <mat-form-field appearance="outline">
+            <mat-label>CPF/CNPJ</mat-label>
+            <input matInput formControlName="cnpj" (input)="applyFilter()">
+            <mat-icon matSuffix>badge</mat-icon>
+          </mat-form-field>
+      
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="tipo" (selectionChange)="applyFilter()">
+              <mat-option value="">Todos</mat-option>
+              <mat-option value="PF">Pessoa Física</mat-option>
+              <mat-option value="PJ">Pessoa Jurídica</mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+          <mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="est" (selectionChange)="applyFilter()">
+              <mat-option value="">Todos</mat-option>
+              <mat-option *ngFor="let estado of estados" [value]="estado.sigla">
+                {{ estado.nome }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+
+      <!-- Tabela de Resultados -->
+      <div class="mat-elevation-z8 results-table-container">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <!-- Código Column -->
+          <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
+            <td mat-cell *matCellDef="let row"> {{row.codigo}} </td>
+          </ng-container>
+
+          <!-- Nome Column -->
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+            <td mat-cell *matCellDef="let row"> {{row.nome}} </td>
+          </ng-container>
+
+          <!-- CPF/CNPJ Column -->
+          <ng-container matColumnDef="cpfCnpj">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> CPF/CNPJ </th>
+            <td mat-cell *matCellDef="let row"> {{row.cpfCnpj}} </td>
+          </ng-container>
+
+          <!-- Tipo Column -->
+          <ng-container matColumnDef="tipo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+            <td mat-cell *matCellDef="let row"> {{row.tipo === 'PF' ? 'Pessoa Física' : 'Pessoa Jurídica'}} </td>
+          </ng-container>
+
+          <!-- Telefone Column -->
+          <ng-container matColumnDef="telefone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefone </th>
+            <td mat-cell *matCellDef="let row"> {{row.telefone}} </td>
+          </ng-container>
+
+          <!-- Email Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+          </ng-container>
+
+          <!-- Cidade Column -->
+          <ng-container matColumnDef="cidade">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Cidade </th>
+            <td mat-cell *matCellDef="let row"> {{row.cidade}} </td>
+          </ng-container>
+
+          <!-- Estado Column -->
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+            <td mat-cell *matCellDef="let row"> {{row.estado}} </td>
+          </ng-container>
+
+          <!-- Ações Column -->
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef> Ações </th>
+            <td mat-cell *matCellDef="let row">
+              
+              <button mat-icon-button color="primary" (click)="onEdit(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="onDelete(row)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Selecione a página"></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>

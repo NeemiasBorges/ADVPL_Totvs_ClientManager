@@ -1,0 +1,58 @@
+::host {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    max-width: 400px;
+    width: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+  
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 16px;
+    }
+  
+    .mat-dialog-content {
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+  
+    .mat-dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+  
+      button {
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+  
+        &:first-of-type {
+          background-color: #f5f5f5;
+          color: #333;
+          border: none;
+  
+          &:hover {
+            background-color: #e0e0e0;
+          }
+        }
+  
+        &:last-of-type {
+          background-color: #ff5252;
+          color: white;
+          border: none;
+  
+          &:hover {
+            background-color: #ff1744;
+          }
+        }
+      }
+    }
+  }

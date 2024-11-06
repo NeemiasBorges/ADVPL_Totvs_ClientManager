@@ -1,0 +1,132 @@
+* {
+  font-size: 12pt;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+body {
+  margin: 10px;
+}
+
+code {
+  font-size: 90%;
+}
+
+h1 {
+  font-size: 125%;
+  margin-left: 0px;
+  background-color: #dddddd;
+  margin-bottom: 12pt;
+}
+
+h2 {
+  font-size: 105%;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  margin-top: 12pt;
+  background-color: #eeeeee;
+}
+
+h3 {
+  font-size: 100%;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  margin-top: 6px;
+  font-weight: bold;
+}
+
+th {
+  text-align: left;
+  border-bottom: 1px solid #dddddd;
+}
+
+td,
+th {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.return {
+  margin-top: 6px;
+  border-top: 1px solid #dddddd;
+  font-weight: bold;
+}
+
+tr.return td {
+  margin-top: 6px;
+  border-top: 1px solid #dddddd;
+  font-weight: bold;
+}
+
+ul {
+  margin-top: 12pt;
+  margin-left: 0px;
+}
+
+li {
+  margin-top: 0px;
+  margin-left: 0px;
+}
+
+li + ul {
+  margin-top: 0px;
+  list-style-image: url('inherit.gif');
+}
+
+p {
+  margin-left: 12px !important;
+}
+
+table {
+  margin-left: 12px !important;
+}
+
+dl {
+  margin-left: 12px !important;
+}
+
+dt {
+  font-weight: bold !important;
+}
+
+dd {
+  margin-left: 12px !important;
+}
+
+#btnToTop {
+  display: inline-block;
+  background-color: #369;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  transition: background-color .3s, 
+    opacity .5s, visibility .5s;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+}
+#btnToTop::after {
+  content: "\f077";
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1em;
+  line-height: 30px;
+  color: #fff;
+}
+#btnToTop:hover {
+  cursor: pointer;
+  background-color: #333;
+}
+#btnToTop:active {
+  background-color: #555;
+}
+#btnToTop.show {
+  opacity: 1;
+  visibility: visible;
+}

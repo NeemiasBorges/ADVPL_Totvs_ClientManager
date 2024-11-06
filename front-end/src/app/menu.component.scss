@@ -1,0 +1,58 @@
+// // Estilização da estrutura geral
+  
+//   // Sidebar
+//   .sidebar {
+//     background-color: #333;
+//     color: #fff;
+//     width: 250px; // Largura quando expandida
+//     transition: width 0.3s ease;
+  
+//     &.sidebar-expanded {
+//       width: 80px; // Largura quando recolhida
+//     }
+  
+//     .sidebar-header {
+//       display: flex;
+//       align-items: center;
+//       justify-content: space-between;
+//       padding: 10px;
+//       background-color: #444;
+//     }
+  
+//     .logo {
+//       height: 40px;
+//       transition: opacity 0.3s;
+//       opacity: 1;
+//     }
+  
+//     .toggle-btn {
+//       color: #fff;
+//     }
+  
+//     mat-nav-list {
+//       margin-top: 10px;
+//     }
+  
+//     mat-expansion-panel {
+//       background-color: transparent;
+//       color: #fff;
+  
+//       .mat-expansion-panel-header {
+//         display: flex;
+//         align-items: center;
+//       }
+  
+//       mat-icon {
+//         margin-right: 10px;
+//       }
+  
+//       a {
+//         color: #fff;
+//         text-decoration: none;
+  
+//         &.active {
+//           font-weight: bold;
+//         }
+//       }
+//     }
+//   }

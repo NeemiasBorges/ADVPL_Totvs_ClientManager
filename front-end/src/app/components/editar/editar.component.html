@@ -1,0 +1,166 @@
+<mat-card class="edit-form-card">
+    <mat-card-header>
+      <mat-card-title>
+        <div class="header-content">
+          <mat-icon>edit</mat-icon>
+          <span>Editar Cliente</span>
+        </div>
+      </mat-card-title>
+    </mat-card-header>
+  
+    <mat-card-content>
+      <form [formGroup]="editForm" class="edit-form">
+        <!-- Seção de Identificação -->
+        <div class="form-section">
+          <div class="section-header">
+            <mat-icon>person</mat-icon>
+            <h3>Identificação do Cliente</h3>
+          </div>
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>CPF/CNPJ</mat-label>
+              <input matInput formControlName="cnpj" placeholder="000.000.000-00" maxlength="19" autocomplete="off">
+              <mat-icon matSuffix>badge</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo</mat-label>
+              <input matInput formControlName="tipo" placeholder="Pessoa Juridica" maxlength="19" autocomplete="off">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Codigo</mat-label>
+              <input matInput formControlName="codigo" >
+              <mat-icon matSuffix>numbers</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Loja</mat-label>
+              <input matInput formControlName="loja">
+              <mat-icon matSuffix>home</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nome</mat-label>
+              <input matInput formControlName="razao" maxlength="60">
+              <mat-icon matSuffix>person_outline</mat-icon>
+            </mat-form-field>
+  
+          </div>
+        </div>
+  
+        <!-- Seção de Contato -->
+        <div class="form-section">
+          <div class="section-header">
+            <mat-icon>contact_phone</mat-icon>
+            <h3>Informações de Contato</h3>
+          </div>
+          <div class="form-grid">
+            <mat-form-field appearance="outline" class="ddd-field">
+              <mat-label>DDD</mat-label>
+              <input matInput formControlName="ddd" maxlength="2">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Telefone</mat-label>
+              <input matInput name="tel" formControlName="tel" placeholder="00000-0000" maxlength="9">
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>E-mail</mat-label>
+              <input matInput formControlName="email" type="email" maxlength="19">
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Site/Homepage</mat-label>
+              <input matInput formControlName="homepage" maxlength="19">
+              <mat-icon matSuffix>language</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <!-- Seção de Endereço -->
+        <div class="form-section">
+          <div class="section-header">
+            <mat-icon>location_on</mat-icon>
+            <h3>Endereço</h3>
+          </div>
+          <div class="form-grid">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Endereço</mat-label>
+              <input matInput formControlName="endereco">
+              <mat-icon matSuffix>home</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="bairro" maxlength="19">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>País</mat-label>
+              <input matInput formControlName="pais" maxlength="19">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>CEP</mat-label>
+              <input matInput formControlName="cep" placeholder="00000-000" maxlength="11">
+              <mat-icon matSuffix>local_post_office</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="cidade" maxlength="31">
+              <mat-icon matSuffix>location_city</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <mat-select formControlName="est">
+                <mat-option *ngFor="let estado of estados" [value]="estado.sigla">
+                  {{ estado.nome }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Código do Município</mat-label>
+              <input matInput formControlName="codigoMunicipio" maxlength="7">
+              <mat-icon matSuffix>pin</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <!-- Seção de Informações Adicionais -->
+        <div class="form-section">
+          <div class="section-header">
+            <mat-icon>info</mat-icon>
+            <h3>Informações Adicionais</h3>
+          </div>
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <input matInput [matDatepicker]="picker" formControlName="dtcad" placeholder="Data de Cadastro">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>              
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Informações Adicionais</mat-label>
+              <textarea matInput formControlName="obs" rows="4"></textarea>
+              <mat-icon matSuffix>notes</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  
+    <mat-card-actions align="end">
+      <button mat-button (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="onSubmit()">
+        <mat-icon>save</mat-icon>
+        Salvar Alterações
+      </button>
+    </mat-card-actions>
+  </mat-card>

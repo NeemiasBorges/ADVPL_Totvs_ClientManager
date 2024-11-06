@@ -7,12 +7,70 @@
 			"name": "TOTVS Language Debug",
 			"program": "${command:AskForProgramName}",
 			"cwb": "${workspaceFolder}",
-			"smartclientBin": "../totvs/bin/smartclient/smartclient.exe",
+			"smartclientBin": "C:\\TOTVS\\TOTVS_P1212310\\Protheus\\bin\\SmartClient\\smartclient.exe",
 			"isMultiSession": true,
 			"enableTableSync": true,
+			"enableMultiThread": true,
 			"extendFeatures": {
 				"charDetails": false
-			}
+			},
+			"programArguments": [],
+			"enableProfile": false,
+			"isAccessibilityMode": false,
+			"doNotShowSplash": false,
+			"openglMode": false,
+			"dpiMode": false,
+			"olddpiMode": false,
+			"language": "1",
+			"ignoreFiles": false
 		}
-	]
+	],
+	"lastPrograms": [
+		{
+			"label": "listar_clientes"
+		},
+		{
+			"label": "grava_cliente"
+		},
+		{
+			"label": "teste"
+		},
+		{
+			"label": "u_teste"
+		},
+		{
+			"args": [],
+			"label": "u_teste"
+		},
+		{
+			"label": "inclui_cliente"
+		},
+		{
+			"args": [],
+			"label": "TAB_CLIENTES"
+		},
+		{
+			"args": [],
+			"label": "listar_clientes"
+		},
+		{
+			"args": [],
+			"label": "u_listar_clientes"
+		},
+		{
+			"label": "u_novo_cliente"
+		},
+		{
+			"args": [],
+			"label": "u_novo_cliente"
+		},
+		{
+			"label": "SIGAADV"
+		},
+		{
+			"label": "SIGAMDI"
+		}
+	],
+	"lastProgramExecuted": "SIGAMDI",
+	"lastProgramArguments": []
 }
