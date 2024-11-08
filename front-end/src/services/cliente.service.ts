@@ -88,7 +88,7 @@ export class ClienteService {
   updateCliente(cliente: Cliente): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Basic YWRtaW46IA==' // Aqui está o token de autenticação
+      'Authorization': 'Basic YWRtaW46IA==' 
     });
 
     const url = `${environment.API_TOTVS_ATUALIZA_CLIENTE}/${cliente.codigo}/${cliente.loja}`;
