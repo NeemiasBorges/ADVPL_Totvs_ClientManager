@@ -165,6 +165,26 @@ export class CadastroComponent implements OnInit {
     }
   }
 
+  private resetValidations(): void {
+    this.identificacaoForm.get('nome')?.setValidators([Validators.required]);
+    this.enderecoForm.get('endereco')?.setValidators([Validators.required]);
+    this.enderecoForm.get('cidade')?.setValidators([Validators.required]);
+    this.enderecoForm.get('estado')?.setValidators([Validators.required]);
+    this.enderecoForm.get('cep')?.setValidators([Validators.required]);
+    this.contatoForm.get('telefone')?.setValidators([Validators.required]);
+    this.contatoForm.get('ddd')?.setValidators([Validators.required]);
+    this.contatoForm.get('email')?.setValidators([Validators.required, Validators.email]);
+    Object.keys(this.identificacaoForm.controls).forEach(key => {
+      this.identificacaoForm.get(key)?.updateValueAndValidity();
+    });
+    Object.keys(this.enderecoForm.controls).forEach(key => {
+      this.enderecoForm.get(key)?.updateValueAndValidity();
+    });
+    Object.keys(this.contatoForm.controls).forEach(key => {
+      this.contatoForm.get(key)?.updateValueAndValidity();
+    });
+  }
+
   ngOnInit(): void {
 
     this.clienteService.consultarUltimoCodigo().subscribe({
@@ -247,7 +267,7 @@ export class CadastroComponent implements OnInit {
 
   onCpfCnpjChange(): void {
     const cpfCnpj = this.identificacaoForm.get('cpfCnpj')?.value;
-
+  
     if (cpfCnpj && cpfCnpj.length >= 14) {
       this.identificacaoForm.patchValue({tipo: 'PJ'});
       this.clienteService.consultarCNPJ(cpfCnpj.replace(/\D/g, '')).subscribe({
@@ -256,7 +276,7 @@ export class CadastroComponent implements OnInit {
             nome: response.nome,
             nomeFantasia: response.fantasia,
           });
-
+  
           this.enderecoForm.patchValue({
             endereco: `${response.logradouro}, ${response.numero}`,
             bairro: response.bairro,
@@ -264,17 +284,64 @@ export class CadastroComponent implements OnInit {
             estado: response.uf,
             cep: response.cep,
           });
-
+  
           this.contatoForm.patchValue({
             telefone: response.telefone?.split(' ')[1] || '',
             ddd: response.telefone?.split(' ')[0].replace(/\D/g, '') || '',
             email: response.email || ''
           });
-
+  
+          this.identificacaoForm.get('nome')?.clearValidators();
+          this.identificacaoForm.get('nome')?.updateValueAndValidity();
+  
+          if (response.logradouro) {
+            this.enderecoForm.get('endereco')?.clearValidators();
+            this.enderecoForm.get('endereco')?.updateValueAndValidity();
+          }
+  
+          if (response.bairro) {
+            this.enderecoForm.get('bairro')?.clearValidators();
+            this.enderecoForm.get('bairro')?.updateValueAndValidity();
+          }
+  
+          if (response.municipio) {
+            this.enderecoForm.get('cidade')?.clearValidators();
+            this.enderecoForm.get('cidade')?.updateValueAndValidity();
+          }
+  
+          if (response.uf) {
+            this.enderecoForm.get('estado')?.clearValidators();
+            this.enderecoForm.get('estado')?.updateValueAndValidity();
+          }
+  
+          if (response.cep) {
+            this.enderecoForm.get('cep')?.clearValidators();
+            this.enderecoForm.get('cep')?.updateValueAndValidity();
+          }
+  
+          if (response.telefone) {
+            this.contatoForm.get('telefone')?.clearValidators();
+            this.contatoForm.get('telefone')?.updateValueAndValidity();
+            this.contatoForm.get('ddd')?.clearValidators();
+            this.contatoForm.get('ddd')?.updateValueAndValidity();
+          }
+  
+          if (response.email) {
+            this.contatoForm.get('email')?.clearValidators();
+            this.contatoForm.get('email')?.updateValueAndValidity();
+          }
+  
+          this.identificacaoForm.get('cpfCnpj')?.valueChanges.subscribe(value => {
+            if (!value || value.length < 14) {
+              this.resetValidations();
+            }
+          });
+  
           this.snackBar.open('CNPJ Consultado com sucesso', 'Fechar');
         },
         error: (error: any) => {
           console.error('Erro ao consultar CNPJ:', error);
+          this.resetValidations();
         }
       });
     } else {
@@ -298,7 +365,9 @@ export class CadastroComponent implements OnInit {
         endereco: this.enderecoForm.get('endereco')?.value,
         bairro:   this.enderecoForm.get('bairro')?.value,
         cidade:   this.enderecoForm.get('cidade')?.value,
-        est:      this.enderecoForm.get('estado')?.value.replace(/\D/g, ''),
+        // teste do estado
+        // est:      this.enderecoForm.get('estado')?.value.replace(/\D/g, ''),
+        est:      'SP',
         cep:      this.enderecoForm.get('cep')?.value.replace(/\D/g, ''),
         complem:  this.enderecoForm.get('codigoMunicipio')?.value,
         pais:     this.enderecoForm.get('pais')?.value,
@@ -320,7 +389,6 @@ export class CadastroComponent implements OnInit {
           }
         });
     } else {
-      // Marca todos os campos como touched para mostrar erros de validação
       [this.identificacaoForm, this.contatoForm, this.enderecoForm, this.informacoesForm].forEach(form => {
         Object.keys(form.controls).forEach(key => {
           const control = form.get(key);

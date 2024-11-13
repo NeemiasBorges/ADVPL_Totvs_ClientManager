@@ -463,118 +463,154 @@ Method get_municipio_estado() class TAB_CLIENTES
 Return .T.
 
 Method atualiza_cliente() class TAB_CLIENTES
-    Local lRPC          as logical
-    Local lRet          as logical
-    Local jQueryParams  as json
-    Local jHeaderReq    as json
-    Local jHeaderRes    as json
-    Local jBodyReq      as json    
-    Local cMsgLog       as character
-    Local jResult       as json
-    Local cError        as character  
+	Local lRPC      as logical
+	Local lRet      as logical
 
-    Private lMsErroAuto as logical
+	Local jQueryParams  as json
+	Local jHeaderReq    as json
+	Local jHeaderRes    as json
+	Local jBodyReq      as json
+	Local cMsgLog       as character
+	Local jResult    	as json
 
-    Try
-        jHeaderRes                  := jsonObject():new()
-        jHeaderRes['Content-Type']  := 'application/json'  
+	Private lMsErroAuto as logical
+	Private err as object
 
-        jQueryParams                := oRest:getQueryRequest()
-        jHeaderReq                  := oRest:getHeaderRequest()
+	If Type('cEmpAnt') == 'U'
+		RpcSetEnv('99','01')
+		lRPC := .T.
+	EndIf
 
-        jBodyReq                    := jsonObject():new()
-        jBodyReq:fromJson(oRest:getBodyRequest())      
+	Try
+		jHeaderRes                  := jsonObject():new()
+		jHeaderRes['Content-Type']  := 'application/json'
 
-        // lRet                        := altera_cliente(@jBodyReq,@cMsgLog)  
-        lRet := .T.
-        If lRet
-            jResult := jsonObject():new()
-            jResult['resultado'] := "Alterado com Sucesso"
-            oRest:setResponse(jResult:toJson())
-        Else
-            oRest:setStatusCode(500)
-            oRest:setFault(cMsgLog)
-        EndIf  
+		jQueryParams                := oRest:getQueryRequest()
+		jHeaderReq                  := oRest:getHeaderRequest()
 
-    Catch err
-        cError          := err:description
-        jResult         := jsonObject():new()
-        jResult['error']:= cError
-        oRest:setFault(jResult:toJson())        
-    EndTry
+		jBodyReq                    := jsonObject():new()
+		jBodyReq:fromJson(oRest:getBodyRequest())
 
-    If lRPC
-        RpcClearEnv()
-    EndIf
+		lret                        := altera_cliente(@jBodyReq,@cMsgLog)
+
+		If lret
+			jResult := jsonObject():new()
+			jResult['resultado'] := "Alterado com Sucesso"
+
+			oRest:setResponse(jResult:toJson())
+		Else
+			oRest:setStatusCode(500)
+			oRest:setFault(cMsgLog)
+		EndIf
+
+	Catch err
+
+		cError          := err:description
+
+		jResp           := jsonObject():new()
+		jResp['error']  := cError
+
+		oRest:setFault(jResp:toJson())
+
+	EndTry
+
+	If lRPC
+		RpcClearEnv()
+	EndIf
+
 Return .T.
+
 
 Method deletar_cliente() class TAB_CLIENTES
 	Local lRPC 		as logical
-    Local lRet      as logical
+	Local lRet      as logical
 
 	Local cError 	as character
 	Local jResp  	as json
 	Local cCodigo   as character
 	Local cLoja		as character
 
-    Local jQueryParams  as json
-    Local jHeaderReq    as json
-    Local jHeaderRes    as json 
-    Local aDados        as array
+	Local jQueryParams  as json
+	Local jHeaderReq    as json
+	Local jHeaderRes    as json
+	Local aDados        as array
 
 	Private err 	as object
+    jPath := oRest:getPathParamsRequest()
+
+	If Type('cEmpAnt') == 'U'
+		rpcSetEnv('99','01')
+		lRPC := .T.
+	EndIf
 
 	try
-
 		jHeaderRes                  := jsonObject():new()
 		jHeaderRes['Content-Type']  := 'application/json'
 
+		jQueryParams                := oRest:getQueryRequest()
+		jHeaderReq                  := oRest:getHeaderRequest()
 
-        jPath := oRest:getPathParamsRequest()
-        
-        cCodigo := jPath["codigo"]
-        cLoja := jPath["loja"]
+		cCodigo                     := jPath['codigo']
+		cLoja                       := jPath['loja'  ]
 
-		jQueryParams := oRest:getQueryRequest()
-		jHeaderReq := oRest:getHeaderRequest()  
+		SA1->(dbSetOrder(1),dbSeek(xFilial(alias())+PadR(cCodigo,6)+PadR(cLoja,2)))
 
-   		SA1->(dbSetOrder(1),dbSeek(xFilial(alias())+cCodigo+cLoja))
 		If SA1->(Found())
-			aDados := array(0) 
-			AADD(aDados,{"A1_COD", cCodigo,Nil})
-			AADD(aDados,{"A1_LOJA", cLoja,Nil})
 
-			lMsErroAuto := .F. 
-			lret        := .T. 
+			aDados := array(0)
 
-			MsExecAuto({|x,y| MATA030(x,y)},aDados,5)   
+			aadd(aDados,{'A1_COD'       ,SA1->A1_COD          ,})
+			aadd(aDados,{'A1_LOJA  '    ,SA1->A1_LOJA         ,})
+
+			lMsErroAuto := .F.
+			lret        := .T.
+
+			MsExecAuto({|x,y| MATA030(x,y)},aDados,5)
 
 			If lMsErroAuto
-       			return .F.
+
+				MostraErro('\data\','api_clientes.execauto.erro.txt')
+				cError := MemoRead('\data\erro_sa1.txt')
+
+				err := errorClass():new()
+				err:descrition := cError
+
+				throw err
+
 			EndIf
 
 			jResp := jsonObject():new()
-			jResp['retorno'] := 'Registro excluído com sucesso!'	
-			oRest:setResponse(jResp:toJson())	 
+			jResp['retorno'] := 'Registro excluído com sucesso!'
+
+			oRest:setResponse(jResp:toJson())
+
 		Else
+
 			err := errorClass():new()
-			err:description := 'Fornecedor não encontrado.'
+			err:description := 'Cliente não encontrado.'
+
 			throw err
+
 		EndIf
+
 	catch err
 
 		cError          := err:description
+
 		jResp           := jsonObject():new()
 		jResp['error']  := cError
 
 		oRest:setStatusCode(500)
-		oRest:setFault(jResp:toJson())     	
+		oRest:setFault(jResp:toJson())
+
 	endtry
 
 	If lRPC
 		RpcClearEnv()
-	EndIf	
+	EndIf
+
 Return .T.
+
 
 Method novo_cliente() class TAB_CLIENTES
 
@@ -686,7 +722,7 @@ If Len(ccnpj) <= 11
         MsUnlockAll()
         Return .F.
     Else
-        MsgInfo("Atualizado com Sucesso!!")     
+        MsgInfo("Adicionado com Sucesso!!")     
         EndTran()   
     EndIf
 
@@ -695,89 +731,119 @@ Return .T.
 
 
 Static Function altera_cliente(jCliente as json, cMsgLog as character) as logical
-    Local cCodigo     as character
-    Local cRazao      as character
-    Local cTipo       as character
-    Local cEndereco   as character
-    Local cBairro     as character
-    Local cCidade     as character
-    Local cEstado     as character
-    Local cCep        as character
-    Local cDdd        as character
-    Local cTel        as character
-    Local cEmail      as character
-    Local cHpage      as character
-    Local cPais       as character
-    Local cDtCad      as character
-    Local cComplem    as character
-    Local cObs        as character
-    Local cLoja       as character
-
-    Local xAutoCab    := {}
-    Private lMsErroAuto as logical 
-
-    // Captura os parâmetros da URL via oRest:getPathParamsRequest()
-    jPath := oRest:getPathParamsRequest()
-
-    // Atribuição das variáveis com valores do JSON
-    cRazao      := jCliente['razao'] 
-    cTipo       := jCliente['tipo'] 
-    cEndereco   := jCliente['endereco'] 
-    cBairro     := jCliente['bairro'] 
-    cCidade     := jCliente['cidade'] 
-    cEstado     := jCliente['estado'] // Verifique se `estado` é a chave correta
-    cCep        := jCliente['cep'] 
-    cDdd        := jCliente['ddd'] 
-    cTel        := jCliente['tel'] 
-    cEmail      := jCliente['email'] 
-    cHpage      := jCliente['hpage'] 
-    cPais       := jCliente['pais'] 
-    cDtCad      := jCliente['dtcad'] 
-    cObs        := jCliente['obs'] 
-    cComplem    := jCliente['complem'] 
-
-    cLoja       := jPath['loja']
-    cCodigo     := jPath['codigo']
-
-    AADD(xAutoCab, {"A1_NOME",   cRazao,    Nil}) 
-    AADD(xAutoCab, {"A1_NREDUZ", cRazao,    Nil})    
-    AADD(xAutoCab, {"A1_END",    cEndereco, Nil}) 
-    AADD(xAutoCab, {"A1_TIPO",   "F",       Nil})   // Valor fixo "F"
-    AADD(xAutoCab, {"A1_EST",    cEstado,   Nil}) 
-    AADD(xAutoCab, {"A1_MUN",    cCidade,   Nil}) 
-    AADD(xAutoCab, {"A1_BAIRRO", cBairro,   Nil})
-    AADD(xAutoCab, {"A1_CEP",    cCep,      Nil})
-    AADD(xAutoCab, {"A1_DDD",    cDdd,      Nil})
-    AADD(xAutoCab, {"A1_TEL",    cTel,      Nil})
-    AADD(xAutoCab, {"A1_EMAIL",  cEmail,    Nil})
-    AADD(xAutoCab, {"A1_HPAGE",  cHpage,    Nil})
-    AADD(xAutoCab, {"A1_OBS",    cObs,      Nil})
-    AADD(xAutoCab, {"A1_COMPLEM",cComplem,  Nil})
-
-   	SA1->(dbSetOrder(1),dbSeek(xFilial(alias())+cCodigo+cLoja))
-		If SA1->(Found())
-			aDados := array(0) 
-			AADD(aDados,{"A1_COD", cCodigo,Nil})
-			AADD(aDados,{"A1_LOJA", cLoja,Nil})
-
-			lMsErroAuto := .F. 
-			lret        := .T. 
-
-			MsExecAuto({|x,y| MATA030(x,y)},aDados,4)   
-
-			If lMsErroAuto
-       			return .F.
-			EndIf
-
-			jResp := jsonObject():new()
-			jResp['retorno'] := 'Registro alterado com sucesso!'	
-			oRest:setResponse(jResp:toJson())	 
-		Else
-			err := errorClass():new()
-			err:description := 'Fornecedor não encontrado.'
-			throw err
-		EndIf
+    Local cCodigo as character
+    Local cLoja as character
+    Local cNome as character
+    Local cNReduz as character
+    Local cPessoa as character
+    Local cTipo as character
+    Local cEnd as character
+    Local cCep as character
+    Local cBairro as character
+    Local cCidade as character
+    Local cCodMun as character
+    Local cEstado as character
+    Local cCnpj as character
+    Local cDdd as character
+    Local cTelefone as character
+    Local cEmail as character
+    Local cHpage as character
+    Local cPais as character
+    Local cObs as character
+    Local cComplem as character
+    
+    Local nOpc as numeric
+    Local nPos as numeric
+    Local aDados as array
+    Local aCampos as array
+    Local aTiposValidos as array
+    Local aStatusValidos as array
+    Local x as variant
+    Local xValue as variant
+    Private lMsErroAuto as logical
+    
+    aTiposValidos := {"F", "L", "R", "S", "X"}
+    aStatusValidos := {"1","2"}
+    
+    cCodigo   := fwNoAccent(decodeUTF8(jCliente['codigo'],'cp1252'))
+    cLoja     := fwNoAccent(decodeUTF8(jCliente['loja'],'cp1252'))
+    cNome     := fwNoAccent(decodeUTF8(jCliente['razao'],'cp1252'))
+    cEnd      := fwNoAccent(decodeUTF8(jCliente['endereco'],'cp1252'))
+    cCep      := fwNoAccent(decodeUTF8(jCliente['cep'],'cp1252'))
+    cBairro   := fwNoAccent(decodeUTF8(jCliente['bairro'],'cp1252'))
+    cCidade   := UPPER(fwNoAccent(decodeUTF8(jCliente['cidade'],'cp1252')))
+    cEstado   := fwNoAccent(decodeUTF8(jCliente['est'],'cp1252'))
+    cCnpj     := fwNoAccent(decodeUTF8(jCliente['cnpj'],'cp1252'))
+    cDdd      := fwNoAccent(decodeUTF8(jCliente['ddd'],'cp1252'))
+    cTelefone := fwNoAccent(decodeUTF8(jCliente['tel'],'cp1252'))
+    cEmail    := fwNoAccent(decodeUTF8(jCliente['email'],'cp1252'))
+    cHpage    := fwNoAccent(decodeUTF8(jCliente['hpage'],'cp1252'))
+    cPais     := fwNoAccent(decodeUTF8(jCliente['pais'],'cp1252'))
+    cObs      := fwNoAccent(decodeUTF8(jCliente['obs'],'cp1252'))
+    cComplem  := fwNoAccent(decodeUTF8(jCliente['complem'],'cp1252'))
+    
+    cNReduz   := LEFT(cNome,tamSX3('A1_NREDUZ')[1])
+    
+    cPessoa := If(Len(cCnpj) <= 11, "F", "J")
+    aDados := array(0)
+    nOpc := 4 
+    
+    If cEstado == 'EX'
+        cTipo := 'X'
+        cCep  := ''
+    Else
+        CC2->(dbSetOrder(4),dbSeek(xFilial(alias())+cEstado+cCidade))
+        cCodMun := CC2->CC2_CODMUN
+        cCidade := CC2->CC2_MUN
+    EndIf
+    
+    // Montagem do array de dados
+    SA1->(dbSetOrder(1),dbSeek(xFilial(alias())+PadR(cCodigo,6)+PadR(cLoja,2)))
+    AAdd(aDados,{'A1_COD'    , SA1->A1_COD  ,})
+    AAdd(aDados,{'A1_LOJA'   , SA1->A1_LOJA ,})
+    AAdd(aDados,{'A1_NOME'   , cNome        ,})
+    AAdd(aDados,{'A1_NREDUZ' , cNReduz      ,})
+    AAdd(aDados,{'A1_PESSOA' , cPessoa      ,})
+    AAdd(aDados,{'A1_END'    , cEnd         ,})
+    AAdd(aDados,{'A1_BAIRRO' , cBairro      ,})
+    AAdd(aDados,{'A1_EST'    , cEstado      ,})
+    AAdd(aDados,{'A1_CGC'    , cCnpj        ,})
+    AAdd(aDados,{'A1_CEP'    , cCep         ,})
+    AAdd(aDados,{'A1_DDD'    , cDdd         ,})
+    AAdd(aDados,{'A1_TEL'    , cTelefone    ,})
+    AAdd(aDados,{'A1_EMAIL'  , cEmail       ,})
+    AAdd(aDados,{'A1_HPAGE'  , cHpage       ,})
+    AAdd(aDados,{'A1_PAIS'   , cPais        ,})
+    AAdd(aDados,{'A1_OBS'    , cObs         ,})
+    AAdd(aDados,{'A1_COMPLEM', cComplem     ,})
+    
+    If cEstado <> 'EX'
+        AAdd(aDados,{'A1_COD_MUN', cCodMun  ,})
+    EndIf
+    
+    aCampos := fwSx3Util():getAllFields('SA1',.F.)
+    For x := 1 To Len(aCampos)
+        If alltrim(aCampos[x]) == 'A1_COD_MUN'
+            Loop
+        EndIf
+        
+        cCampo := AllTrim(aCampos[x])
+        xValue := &('SA1->' + cCampo)
+        nPos   := aScan(aDados,{|xCampo| AllTrim(xCampo[1]) == cCampo})
+        
+        If nPos == 0
+            AAdd(aDados,{cCampo,xValue,})
+        EndIf
+    Next
+    
+    lMsErroAuto := .F.
+    MsExecAuto({|x,y| MATA030(x,y)},aDados,nOpc)
+    
+    If lMsErroAuto
+        mostraerro('\data\','api_clientes.execauto.erro.txt')
+        cMsgLog := memoread('\data\api_clientes.execauto.erro.txt')
+        Return .F.
+    EndIf
 
     MsUnlockAll()
-    Return .T.
-   
+Return .T.

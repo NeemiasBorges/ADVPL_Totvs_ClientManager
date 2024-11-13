@@ -1,16 +1,9 @@
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
-:root {
-    --mdc-list-list-item-label-text-color: white;
-  }
-  
-mat-nav-list a.mat-list-item {
-    color: white;  // Define a cor do texto como branco
-  }
-  
-  mat-nav-list a.mat-list-item:hover {
-    color: #f5f5f5;  // Cor no hover (opcional)
-  }
-  
 html, body { height: 100%; background-color: #333; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.loading-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }

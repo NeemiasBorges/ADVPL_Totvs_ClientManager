@@ -22,12 +22,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { Console } from 'console';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+interface ConfirmDialogData {
+  codigo: string;
+  loading: boolean;
+}
+
 
 @Component({
   selector: 'app-consulta',
   standalone: true,
   imports: [
     HttpClientModule,
+    MatProgressSpinnerModule,
     CommonModule,
     RouterModule,
     MatTableModule,
@@ -51,6 +59,8 @@ import { Console } from 'console';
   templateUrl: './consulta.component.html',
   styleUrls: ['./consulta.component.scss']
 })
+
+
 export class ConsultaComponent implements OnInit {
   estados = estados;
   searchForm: FormGroup;
@@ -138,20 +148,45 @@ export class ConsultaComponent implements OnInit {
   onDelete(row: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '450px',
-      data: { codigo: row.codigo }
+      data: {
+        codigo: row.codigo,
+        loading: false
+      } as ConfirmDialogData
     });
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'confirm') {
-        this.clienteService.deleteCliente(row.codigo,row.loja).subscribe();
-        this.dataSource = new MatTableDataSource(this.dataSource.data.filter((cliente: Cliente) => cliente.codigo !== row.codigo));
-        
-        this.snackBar.open('Cliente excluído com sucesso!', 'Fechar', {
-          duration: 2000,
-          verticalPosition: 'top',
-        });
+        const dialogComponent = dialogRef.componentInstance;
+        if (dialogComponent) {
+          dialogComponent.data.codigo = '';
         }
-    }
-  )}
+  
+        this.clienteService.deleteCliente(row.codigo, row.loja).subscribe({
+          next: (response) => {
+            this.dataSource.data = this.dataSource.data.filter(
+              (cliente: Cliente) => cliente.codigo !== row.codigo
+            );
+            
+            this.dataSource._updateChangeSubscription();
+  
+            this.snackBar.open('Cliente excluído com sucesso!', 'Fechar', {
+              duration: 2000,
+              verticalPosition: 'top',
+            });
+          },
+          error: (error) => {
+            this.snackBar.open('Erro ao excluir cliente!', 'Fechar', {
+              duration: 2000,
+              verticalPosition: 'top',
+            });
+          },
+          complete: () => {
+            dialogRef.close();
+          }
+        });
+      }
+    });
+  }
     
   applyFilter() {
     console.log('Formulário de busca:', this.searchForm.value);
