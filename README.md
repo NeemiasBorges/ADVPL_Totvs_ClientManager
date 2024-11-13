@@ -1,81 +1,129 @@
-# FTCITP_Proteus
-Projeto de Proteus e ADVPL++
+# Cliente360 - Sistema de Gerenciamento de Clientes
 
-# Documentação da API TAB_CLIENTES
+Sistema full-stack para gerenciamento de clientes integrando Angular Material no frontend com API TOTVS Protheus, incluindo notificações por email automatizadas.
 
-Este documento fornece uma visão geral da API TAB_CLIENTES, que gerencia operações relacionadas ao gerenciamento de clientes.
+## 🚀 Tecnologias Utilizadas
 
-## Índice
+### Frontend
+- Angular 16+
+- Angular Material
+- RxJS
+- TypeScript
+- SCSS
 
-1. [Introdução](#introdução)
-2. [Endpoints](#endpoints)
-3. [Métodos](#métodos)
-4. [Tratamento de Erros](#tratamento-de-erros)
+### Backend
+- TOTVS Protheus REST API
+- Node.js (Serviço de Email)
+- Express
+- Nodemailer
 
-## Introdução
+## 📋 Pré-requisitos
 
-A API TAB_CLIENTES é construída usando o TOTVS Language Pack (TLPP) e fornece funcionalidades para gerenciar informações de clientes. Inclui operações como listar clientes, recuperar detalhes específicos de clientes, atualizar informações de clientes, excluir clientes e adicionar novos clientes.
+- Node.js 18+
+- Angular CLI 16+
+- TOTVS Protheus configurado e rodando localmente
+- NPM ou Yarn
+- Banco de dados configurado no Protheus
 
-## Endpoints
+## 🔧 Instalação e Configuração
 
-A API expõe os seguintes endpoints:
+### Frontend (Angular)
 
-- `/v1/clientes/listar`: Listar todos os clientes
-- `/v1/clientes/lista_cliente`: Recuperar informações de um cliente específico
-- `/v1/clientes/atualizar`: Atualizar informações do cliente
-- `/v1/clientes/deletar`: Excluir um cliente
-- `/v1/clientes/incluir`: Adicionar um novo cliente
+1. Clone o repositório e entre no diretório do frontend.
+2. Instale as dependências.
+3. Inicie o servidor de desenvolvimento.
 
-## Métodos
+### Serviço de Email (Node.js)
 
-### Listar Todos os Clientes
+1. Entre no diretório do serviço de email e instale as dependências.
+2. Configure as variáveis de ambiente.
+3. Inicie o serviço.
 
-- **Endpoint**: `/v1/clientes/listar`
-- **Método**: GET
-- **Descrição**: Recupera uma lista de todos os clientes no sistema.
-- **Resposta**: Retorna um objeto JSON contendo informações dos clientes.
+### Configuração do arquivo .env para o serviço de email
 
-### Recuperar Informações do Cliente
+Configure os valores de `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, e `TOTVS_API_URL` conforme necessário.
 
-- **Endpoint**: `/v1/clientes/lista_cliente`
-- **Método**: GET
-- **Descrição**: Recupera informações detalhadas de um cliente específico.
-- **Parâmetros de Consulta**:
-  - `codigo`: Código do cliente
-  - `loja`: Código da loja do cliente
-- **Resposta**: Retorna um objeto JSON com os detalhes do cliente.
+## 📐 Estrutura do Projeto
 
-### Atualizar Cliente
+```
+cliente360/
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── components/
+│   │   │   ├── services/
+│   │   │   ├── models/
+│   │   │   └── shared/
+│   │   ├── assets/
+│   │   └── environments/
+├── email-service/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── services/
+│   │   └── utils/
+└── README.md
+```
 
-- **Endpoint**: `/v1/clientes/atualizar`
-- **Método**: PUT
-- **Descrição**: Atualiza as informações de um cliente existente.
-- **Corpo da Requisição**: Objeto JSON contendo as informações atualizadas do cliente.
-- **Resposta**: Retorna uma mensagem de sucesso se a atualização for bem-sucedida.
+## 🔌 Endpoints da API TOTVS
 
-### Excluir Cliente
+### Clientes
 
-- **Endpoint**: `/v1/clientes/deletar`
-- **Método**: DELETE
-- **Descrição**: Remove um cliente do sistema.
-- **Parâmetros de Consulta**:
-  - `codigo`: Código do cliente
-  - `loja`: Código da loja do cliente
-- **Resposta**: Retorna uma mensagem de sucesso se a exclusão for bem-sucedida.
+- `GET /v1/clientes/listar` - Lista todos os clientes
+- `GET /v1/clientes/:codigo` - Obtém detalhes de um cliente específico
+- `POST /v1/clientes/incluir` - Cadastra novo cliente
+- `PUT /v1/clientes/atualizar/:codigo/:loja` - Atualiza dados do cliente
+- `DELETE /v1/clientes/deletar/:codigo/:loja` - Remove cliente
+- `GET /v1/clientes/ultimoCodigo` - Obtém último código cadastrado
+- `GET /v1/clientes/municipiosporestado/:estado` - Lista municípios por estado
+- `GET /v1/clientes/codigomunicipio/:estado/:municipio` - Obtém código do município
 
-### Adicionar Novo Cliente
+## 📨 Serviço de Email
 
-- **Endpoint**: `/v1/clientes/incluir`
-- **Método**: POST
-- **Descrição**: Adiciona um novo cliente ao sistema.
-- **Corpo da Requisição**: Objeto JSON contendo as informações do novo cliente.
-- **Resposta**: Retorna uma mensagem de sucesso se o cliente for adicionado com sucesso.
+O serviço de email é um microsserviço Node.js que:
+1. Monitora alterações na API TOTVS através de polling
+2. Envia emails automáticos quando detecta alterações em clientes
+3. Mantém um log de notificações enviadas
 
-## Tratamento de Erros
+## 🔒 Segurança
 
-Em caso de erros, a API retornará códigos de status HTTP apropriados junto com mensagens de erro no corpo da resposta. Os códigos de status comuns incluem:
+- Implementação de JWT para autenticação
+- Sanitização de inputs
+- Validação de dados no frontend e backend
+- Proteção contra CSRF
+- Rate limiting na API
 
-- 200: Operação bem-sucedida
-- 400: Requisição inválida (por exemplo, parâmetros ausentes ou inválidos)
-- 404: Recurso não encontrado
-- 500: Erro interno do servidor
+## 📦 Build e Deploy
+
+### Frontend
+
+1. Gerar build de produção.
+
+### Serviço de Email
+
+1. Gerar build de produção.
+
+## 🛠️ Desenvolvimento
+
+### Adicionando Novos Componentes
+
+Para novos componentes, utilize `ng generate component` e `ng generate service` para novos serviços.
+
+### Padrões de Código
+
+- Utilize TypeScript strict mode
+- Siga o style guide do Angular
+- Mantenha componentes pequenos e reutilizáveis
+- Implemente lazy loading para módulos
+- Use interceptors para tratamento de erros
+
+# 📝 Autores
+
+- **Neemias Borges**
+- **Amanda Marino**
+- **Gabriel Rodrigues**
+- **Gustavo Kravensko**
+- **Gustavo Meira**
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
