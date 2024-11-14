@@ -2,6 +2,7 @@
 
 Sistema full-stack para gerenciamento de clientes integrando Angular Material no frontend com API TOTVS Protheus, incluindo notificações por email automatizadas.
 
+---
 ## 🚀 Tecnologias Utilizadas
 
 ### Frontend
@@ -63,7 +64,7 @@ cliente360/
 │   │   └── utils/
 └── README.md
 ```
-
+---
 ## 🔌 Endpoints da API TOTVS
 
 ### Clientes
@@ -108,6 +109,7 @@ O serviço de email é um microsserviço Node.js que:
 
 Para novos componentes, utilize `ng generate component` e `ng generate service` para novos serviços.
 
+---
 ### Padrões de Código
 
 - Utilize TypeScript strict mode
@@ -116,13 +118,80 @@ Para novos componentes, utilize `ng generate component` e `ng generate service` 
 - Implemente lazy loading para módulos
 - Use interceptors para tratamento de erros
 
+---
 # 📝 Autores
-
-- **Neemias Borges**
-- **Amanda Marino**
-- **Gabriel Rodrigues**
-- **Gustavo Kravensko**
-- **Gustavo Meira**
+<div align="center">
+  <table>
+    <tr>
+      <td>
+        <div align="center">
+          <a href="https://github.com/Mandy-Marino" target="_blank">
+            <img loading="lazy" src="https://avatars.githubusercontent.com/u/177773601?v=4" width="115">
+          </a><br>
+          <a href="https://github.com/Mandy-Marino" target="_blank">
+            <img src="https://img.shields.io/badge/Amanda%20França-F6C953?style=for-the-badge&logo=phoenixframework&logoColor=%23FD4F00">
+          </a>
+          <a href="https://www.linkedin.com/in/amanda-marino-28b34a324/" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-Amanda%20Marino-0077B5?style=for-the-badge&logo=linkedin&logoColor=white">
+          </a><br>
+        </div>
+      </td>
+      <td>
+        <div align="center">
+          <a href="https://github.com/GabRodrigues23" target="_blank">
+            <img loading="lazy" src="https://avatars.githubusercontent.com/u/144338173?v=4" width="115">
+          </a><br>
+          <a href="https://github.com/GabRodrigues23" target="_blank">
+            <img src="https://img.shields.io/badge/Gabriel%20Rodrigues-F6C953?style=for-the-badge&logo=phoenixframework&logoColor=%23FD4F00">
+          </a>
+          <a href="https://www.linkedin.com/in/gabriel-rodrigues-de-oliveira-33104b251/" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-Gabriel%20Rodrigues-0077B5?style=for-the-badge&logo=linkedin&logoColor=white">
+          </a><br>
+        </div>
+      </td>
+      <td>
+        <div align="center">
+          <a href="https://github.com/Kravszenko" target="_blank">
+            <img loading="lazy" src="https://avatars.githubusercontent.com/u/107780423?v=4" width="115">
+          </a><br>
+          <a href="https://github.com/Kravszenko" target="_blank">
+            <img src="https://img.shields.io/badge/Gustavo%20Kravszenko-F6C953?style=for-the-badge&logo=phoenixframework&logoColor=%23FD4F00">
+          </a>
+          <a href="https://www.linkedin.com/in/gustavo-cesar-kravszenko-913b8117a/" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-Gustavo%20Kravszenko-0077B5?style=for-the-badge&logo=linkedin&logoColor=white">
+          </a><br>
+        </div>
+      </td>
+      <td>
+        <div align="center">
+          <a href="https://github.com/gusmeira88" target="_blank">
+            <img loading="lazy" src="https://avatars.githubusercontent.com/u/147567781?v=4" width="115">
+          </a><br>
+          <a href="https://github.com/gusmeira88" target="_blank">
+            <img src="https://img.shields.io/badge/Gustavo%20Meira-F6C953?style=for-the-badge&logo=phoenixframework&logoColor=%23FD4F00">
+          </a>
+          <a href="#" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-Gustavo%20Meira-0077B5?style=for-the-badge&logo=linkedin&logoColor=white">
+          </a><br>
+        </div>
+      </td>
+      <td>
+        <div align="center">
+          <a href="https://github.com/NeemiasBorges" target="_blank">
+            <img loading="lazy" src="https://avatars.githubusercontent.com/u/51499704?v=4" width="115">
+          </a><br>
+          <a href="https://github.com/NeemiasBorges" target="_blank">
+            <img src="https://img.shields.io/badge/Neemias%20Borges-F6C953?style=for-the-badge&logo=phoenixframework&logoColor=%23FD4F00">
+          </a>
+          <a href="https://www.linkedin.com/in/neemias-borges/" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-Neemias%20Borges-0077B5?style=for-the-badge&logo=linkedin&logoColor=white">
+          </a><br>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+---
 
 ## 📄 Licença
 
